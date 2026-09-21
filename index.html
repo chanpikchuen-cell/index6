@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>救恩書院中文科《始得西山宴遊記》自學網站</title>
+    <style>
+        :root {
+            --primary-color: #6a1b9a;
+            --primary-hover: #4a148c;    
+            --primary-light: #f3e5f5;    
+            --bg-color: #f7f6f9;         
+            --card-bg: #ffffff;          
+            --text-main: #1d1d1f;        
+            --text-sub: #424242;         
+            --word-bg: #f3e5f5;          
+            --word-color: #4a148c;       
+        }
+
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang HK", "Noto Sans HK", "Microsoft JhengHei", sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main); 
+            line-height: 2.1; 
+            font-size: 17px;
+            margin: 0; 
+            padding: 0; 
+        }
+
+        header { 
+            background: linear-gradient(135deg, #6a1b9a, #4a148c); 
+            color: white; 
+            padding: 25px 20px; 
+            text-align: center; 
+            box-shadow: 0 4px 12px rgba(106, 27, 154, 0.15); 
+        }
+        header h1 { margin: 0; font-size: 26px; letter-spacing: 1px; }
+
+        .container { max-width: 1040px; margin: 25px auto; padding: 0 15px 50px 15px; }
+        
+        .tabs { display: flex; justify-content: center; margin-bottom: 25px; gap: 12px; flex-wrap: wrap; }
+        .tab-btn { 
+            background-color: #e8e3f0; 
+            border: none; 
+            padding: 12px 28px; 
+            font-size: 17px; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            font-weight: bold; 
+            color: #4a148c;
+            transition: all 0.2s ease;
+        }
+        .tab-btn:hover { background-color: #d1c4e9; }
+        .tab-btn.active { background-color: var(--primary-color); color: white; box-shadow: 0 4px 10px rgba(106, 27, 154, 0.25); }
+        
+        .tab-content { display: none; background-color: var(--card-bg); padding: 32px; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); }
+        .tab-content.active { display: block; }
+        
+        .section-title { 
+            color: var(--primary-color); 
+            border-bottom: 3px solid var(--primary-light); 
+            padding-bottom: 8px; 
+            margin-top: 10px; 
+            margin-bottom: 20px;
+            font-size: 22px; 
+            font-weight: bold; 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .para-selector { margin-bottom: 20px; display: flex; gap: 10px; align-items: center;}
+        .para-selector select { 
+            padding: 10px 14px; 
+            font-size: 16px; 
+            flex-grow: 1; 
+            border-radius: 8px; 
+            border: 2px solid #d1c4e9;
+            background-color: #fff;
+            outline: none;
+            font-weight: bold;
+            color: var(--text-main);
+            max-width: 100%;
+        }
+
+        .read-container { display: flex; gap: 20px; margin-bottom: 25px; }
+        
+        .left-col { 
+            flex: 1; 
+            background-color: #ffffff; 
+            border: 1px solid #e1bee7; 
+            border-left: 5px solid var(--primary-color);
+            border-radius: 10px; 
+            padding: 20px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .right-col { 
+            flex: 1; 
+            background-color: #fbf9fc; 
+            border: 1px solid #e0d7ec; 
+            border-left: 5px solid #8e24aa;
+            border-radius: 10px; 
+            padding: 20px; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        
+        .col-title { 
+            font-weight: bold; 
+            color: var(--primary-color); 
+            border-bottom: 1px dashed #d1c4e9; 
+            padding-bottom: 10px; 
+            margin-bottom: 16px; 
+            font-size: 18px; 
+        }
+        
+        .text-box, .translation-box { font-size: 19px; line-height: 2.3; letter-spacing: 0.5px; }
+        .translation-box { color: var(--text-sub); }
+        
+        .sent-block { transition: all 0.2s ease; border-radius: 6px; padding: 3px 6px; display: inline; cursor: pointer; }
+        .sent-block.highlight { background-color: #fff9c4; color: #000; }
+        .sent-block.locked-highlight { background-color: #ede7f6; box-shadow: inset 0 0 0 2px var(--primary-color); color: #000; font-weight: 500;}
+        
+        .word { 
+            color: var(--word-color); 
+            background-color: var(--word-bg);
+            border-bottom: 2px solid var(--primary-color); 
+            padding: 2px 6px; 
+            margin: 0 2px;
+            border-radius: 4px;
+            font-weight: bold; 
+            cursor: pointer; 
+            display: inline-block;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+        }
+        .word:hover {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        .note-panel { 
+            position: sticky; 
+            bottom: 20px; 
+            background: #ffffff; 
+            border: 2px solid var(--primary-color); 
+            box-shadow: 0 10px 25px rgba(106, 27, 154, 0.15);
+            padding: 18px 22px; 
+            border-radius: 12px; 
+            font-size: 18px; 
+            min-height: 70px; 
+            z-index: 1000;
+        }
+        
+        .student-form { background: #f3e5f5; padding: 20px; border-radius: 10px; margin-bottom: 30px; display: flex; gap: 15px; flex-wrap: wrap;}
+        .student-form input { padding: 10px 14px; font-size: 16px; border: 1px solid #ce93d8; border-radius: 6px; flex: 1; min-width: 160px;}
+        
+        .quiz-question { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed #e0e0e0; }
+        .quiz-title { font-weight: bold; font-size: 18px; margin-bottom: 14px; color: var(--text-main); line-height: 1.5; }
+        
+        .quiz-option { 
+            display: flex; 
+            align-items: center; 
+            margin: 10px 0; 
+            padding: 12px 16px; 
+            border: 1.5px solid #e0e0e0; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            background: #fafafa;
+            font-size: 17px;
+            transition: all 0.2s ease;
+        }
+        .quiz-option:hover { background-color: #f3e5f5; border-color: #ab47bc; }
+        .quiz-option input { margin-right: 12px; transform: scale(1.2); }
+        .quiz-option.correct { background-color: #e8f5e9; border-color: #66bb6a; color: #2e7d32; font-weight: bold;}
+        .quiz-option.wrong { background-color: #ffebee; border-color: #ef5350; color: #c62828; }
+        
+        .btn-submit { 
+            background-color: var(--primary-color); 
+            color: white; 
+            border: none; 
+            padding: 14px 28px; 
+            font-size: 18px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(106, 27, 154, 0.2);
+            transition: all 0.2s ease;
+        }
+        .btn-submit:hover { background-color: var(--primary-hover); }
+        .btn-retry { background-color: #2e7d32; margin-top: 15px; }
+        .btn-retry:hover { background-color: #1b5e20; }
+        
+        #quiz-result-banner { margin-top: 25px; padding: 20px; border-radius: 8px; text-align: center; font-size: 21px; font-weight: bold; display: none; }
+        .result-pass { background-color: #e8f5e9; color: #1b5e20; border: 2px solid #a5d6a7; }
+        .result-fail { background-color: #ffebee; color: #b71c1c; border: 2px solid #ef9a9a; }
+
+        @media (max-width: 768px) {
+            header { padding: 18px 15px; }
+            header h1 { font-size: 20px; }
+            
+            .container { margin: 15px auto; padding: 0 10px 60px 10px; }
+            
+            .tabs { flex-direction: column; gap: 8px; margin-bottom: 15px; }
+            .tab-btn { width: 100%; text-align: center; padding: 12px 15px; font-size: 16px; }
+            
+            .tab-content { padding: 20px 15px; }
+            .section-title { font-size: 18px; line-height: 1.4; }
+            
+            .para-selector { flex-direction: column; align-items: stretch; }
+            .para-selector select { font-size: 15px; padding: 12px; }
+            
+            .read-container { flex-direction: column; gap: 15px; margin-bottom: 15px;}
+            .left-col, .right-col { padding: 15px; }
+            
+            .col-title { font-size: 16px; margin-bottom: 12px; }
+            .text-box, .translation-box { font-size: 17px; line-height: 2.1; }
+            
+            .note-panel { 
+                padding: 12px 15px; 
+                font-size: 16px; 
+                bottom: 10px; 
+                min-height: 60px; 
+                border-width: 1.5px;
+            }
+
+            .student-form { flex-direction: column; padding: 15px; gap: 12px; }
+            .student-form input { width: 100%; min-width: 100%; }
+            
+            .quiz-title { font-size: 17px; }
+            .quiz-option { font-size: 16px; padding: 12px; }
+            .btn-submit { padding: 12px; font-size: 17px; }
+            
+            #quiz-result-banner { font-size: 18px; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📚 救恩書院中文科《始得西山宴遊記》自學網站</h1>
+</header>
+
+<div class="container">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('tab-read')">第一部分：課文互動對讀與注釋</button>
+        <button class="tab-btn" onclick="switchTab('tab-quiz')">第二部分：詞解測驗</button>
+    </div>
+
+    <!-- 第一部分：課文對讀 -->
+    <div id="tab-read" class="tab-content active">
+        <span class="section-title">📖 第一部分：課文互動對讀與字詞注釋</span>
+        <div class="para-selector">
+            <select id="paraSelect" onchange="changePara()">
+                <option value="1">第一段：寫貶謫永州初期的心情和發現西山前到處遊玩的情形</option>
+                <option value="2">第二段：記敍柳宗元發現、攀登、遊覽西山的經過與宴遊之樂</option>
+            </select>
+        </div>
+        
+        <p style="font-size:15px; color:#555; background: #f3e5f5; padding: 8px 14px; border-radius: 6px; display: inline-block; margin-bottom: 15px; line-height: 1.5;">
+            💡 <strong>學習提示</strong>：點擊句子可對照白話譯文；點擊帶有紫底框的字詞（如 <span class="word" style="pointer-events:none;">僇人</span>）可觀看詳細注釋。
+        </p>
+
+        <div class="read-container">
+            <div class="left-col">
+                <div class="col-title">📜 文言原文</div>
+                <div id="text-container" class="text-box"></div>
+            </div>
+            <div class="right-col">
+                <div class="col-title">✍️ 白話語譯</div>
+                <div id="trans-container" class="translation-box"></div>
+            </div>
+        </div>
+
+        <div class="note-panel" id="notePanel">
+            <div id="noteContent">請點擊上方課文中的<span class="word">紫底框字詞</span>查看注釋！</div>
+        </div>
+    </div>
+
+    <!-- 第二部分：句譯與詞解測驗 -->
+    <div id="tab-quiz" class="tab-content">
+        <span class="section-title">📝 第二部分：詞解測驗</span>
+        <div class="student-form">
+            <input type="text" id="stu-name" placeholder="英文姓名 (例: Chan Tai Man)">
+            <input type="text" id="stu-class" placeholder="班別 (例: 4A)">
+            <input type="number" id="stu-num" placeholder="學號 (例: 01)">
+        </div>
+        <div id="quiz-form"></div>
+        <button id="btn-submit-quiz" class="btn-submit" onclick="gradeQuiz()">提交答案</button>
+        <button id="btn-retry-quiz" class="btn-submit btn-retry" onclick="generateQuiz()" style="display:none;">重新挑戰</button>
+        <div id="quiz-result-banner" class="result-pass"></div>
+    </div>
+</div>
+
+<script>
+    // 注釋字典
+    const dict = {
+        1: { word: "僇人", note: "接受刑罰的人，這裏指被貶謫的人。僇(lù)，粵音陸(luk6)。" },
+        2: { word: "恆惴慄", note: "恆，副詞，經常。惴慄，恐懼、顫慄。惴慄(zhuìlì)，粵音醉律(zeoi3 leot6)。" },
+        3: { word: "隙", note: "空閒時間、閒暇。" },
+        4: { word: "施施", note: "慢慢地步行的樣子，或解作喜悦自得的樣子。施(yí)，粵音移(ji4)。" },
+        5: { word: "漫漫", note: "不經意。" },
+        6: { word: "徒", note: "同伴，或解作志同道合的人。" },
+        7: { word: "窮迴溪", note: "窮，窮盡、走到盡頭。迴，迂迴曲折的樣子。窮迴溪，走到迂迴曲折的溪流盡頭。" },
+        8: { word: "無遠", note: "無、無論。遠，多遠。" },
+        9: { word: "披草", note: "披，分開。披草，撥開草叢。" },
+        10: { word: "傾壺", note: "傾，把東西倒出來，引申為「盡」，完全倒出。傾壺，倒盡壺中的酒。" },
+        11: { word: "更", note: "交替、輪流。" },
+        12: { word: "相枕", note: "枕，動詞，把頭放在墊子或其他東西上。相枕，互相枕靠。" },
+        13: { word: "意有所極，夢亦同趣", note: "意，意念。極，到達。趣，同「趨」，趨向、前往。全句指心中意念想到達那地方，夢中也同樣前往(那地方)。" },
+        14: { word: "覺", note: "醒來。" },
+        15: { word: "怪特", note: "奇怪特別。" },
+        16: { word: "法華西亭", note: "法華寺的西亭。" },
+        17: { word: "指異之", note: "指，用手指指着。異，奇特，這裏活用為形容詞的意動用法，解作「認為……奇特」。之，代詞，指西山。" },
+        18: { word: "緣", note: "沿着。" },
+        19: { word: "斫榛莽", note: "斫，砍伐。榛，叢生的灌木。莽，叢生的荒草。斫榛莽，砍伐叢生的灌木和野草。" },
+        20: { word: "茅茷", note: "茅，草名。茷，草葉茂盛的樣子。茅茷，茂密的茅草。" },
+        21: { word: "窮", note: "窮盡，這裏指直到西山的最高峯處。" },
+        22: { word: "箕踞", note: "兩腳向外張開成八字，像簸箕般坐下。" },
+        23: { word: "遨", note: "嬉遊，這裏引申為隨意眺望四周景色。" },
+        24: { word: "數州", note: "虛數，幾個州的意思。" },
+        25: { word: "土壤", note: "土地。" },
+        26: { word: "衽席", note: "卧蓆。衽席是同義複詞。" },
+        27: { word: "高下之勢", note: "高低起伏的地勢。" },
+        28: { word: "岈然", note: "深谷大空的樣子。形容在西山山頂俯瞰，山下的平地像深谷般。" },
+        29: { word: "洼", note: "同「窪」，本指深池，這裏指低陷。" },
+        30: { word: "垤", note: "蟻窩洞口外積起的小土堆。" },
+        31: { word: "穴", note: "洞穴，與上文「垤」相對，這裏應特指蟻蟲的洞穴。" },
+        32: { word: "尺寸千里", note: "這裏指由高處往下望，眼前所見只有尺寸的土地，實際有千里那麼遼闊。" },
+        33: { word: "攢蹙累積", note: "攢，聚集。蹙，緊迫。累，堆疊。積，積聚。形容山勢緊密聚集，層疊堆積。" },
+        34: { word: "莫得遯隱", note: "遯，同「遁」，隱匿。遯隱，隱藏。沒有甚麼(景色)可以隱藏。" },
+        35: { word: "縈青繚白", note: "縈、繚，纏繞。青，這裏借代山。白，這裏借代水。意思是青山白水互相纏繞。" },
+        36: { word: "外與天際", note: "際，相連、匯合。向外與天相連。" },
+        37: { word: "四望如一", note: "四望，眺望四方。眺望四方，(感覺西山與天空)好像是一樣的。" },
+        38: { word: "然後", note: "然，代詞，這樣。然後，這樣以後。" },
+        39: { word: "培塿", note: "小土丘。" },
+        40: { word: "悠悠乎與顥氣俱", note: "悠悠，遼闊無際、久遠。顥氣，天地自然。俱，在一起。全句指(西山的景象)多麼浩渺久遠，好像與天地自然在一起。" },
+        41: { word: "洋洋乎與造物者遊", note: "洋洋，廣闊無邊的樣子。造物者，這裏指天地、自然。遊，遊覽。全句指(西山的景象)多麼廣闊無邊，好像與天地一起遨遊。" },
+        42: { word: "引觴滿酌", note: "引，拿起。觴，古代喝酒用的器具。酌，斟酒。拿起酒杯斟滿了酒。" },
+        43: { word: "頹然", note: "倒下的樣子，這裏形容醉倒的樣子。" },
+        44: { word: "蒼然", note: "青黑色。形容傍晚的天色深沉。" },
+        45: { word: "心凝形釋", note: "心，心神。凝，凝聚。形，形體、身體。釋，釋放。這裏指身體不受拘束的狀態。" },
+        46: { word: "萬化冥合", note: "萬化，萬物。冥，暗合，即未經商討而意思契合。" },
+        47: { word: "嚮", note: "同「向」，從前、過往。" },
+        48: { word: "未始", note: "本指不曾、從未，這裏引申為算不上。" },
+        49: { word: "於是乎", note: "是，代詞，相當於「此」，指這次宴遊的經歷。在這次宴遊經歷。" },
+        50: { word: "志", note: "同「誌」，記述。" }
+    };
+
+    // 課文對照資料
+    const paragraphs = {
+        1: [
+            { text: `自余為<span class="word" onclick="showNote(1)">僇人</span>，居是州，<span class="word" onclick="showNote(2)">恆惴慄</span>。`, trans: `自從我成為被貶謫的罪人，居住在這個州，（心中）經常恐懼、顫慄。` },
+            { text: `其<span class="word" onclick="showNote(3)">隙</span>也，則<span class="word" onclick="showNote(4)">施施</span>而行，<span class="word" onclick="showNote(5)">漫漫</span>而遊。`, trans: `在那些空閒時間，（我）就慢慢地步行，不經意地遊覽。` },
+            { text: `日與其<span class="word" onclick="showNote(6)">徒</span>上高山，入深林，<span class="word" onclick="showNote(7)">窮迴溪</span>，幽泉怪石，<span class="word" onclick="showNote(8)">無遠</span>不到。`, trans: `每天和同伴登上高山，走入深林，走到迂迴曲折溪流的盡頭，偏遠的泉水、奇怪的石頭，無論多遠沒有（一處不曾）到達。` },
+            { text: `到則<span class="word" onclick="showNote(9)">披草</span>而坐，<span class="word" onclick="showNote(10)">傾壺</span>而醉。`, trans: `（我們）到達了就撥開草叢坐下來，倒盡壺中的酒喝到醉。` },
+            { text: `醉則<span class="word" onclick="showNote(11)">更</span><span class="word" onclick="showNote(12)">相枕</span>以卧，卧而夢，<span class="word" onclick="showNote(13)">意有所極，夢亦同趣</span>。`, trans: `醉了就輪流互相枕靠身體睡覺，睡了便作夢，心中意想到達那地方，夢中也同樣前往（那地方）。` },
+            { text: `<span class="word" onclick="showNote(14)">覺</span>而起，起而歸。`, trans: `睡醒便起來，起來就回去。` },
+            { text: `以為凡是州之山有異態者，皆我有也，而未始知西山之<span class="word" onclick="showNote(15)">怪特</span>。`, trans: `（我）以為凡是這個州有奇特形態的山水，都是我遊歷過的，卻不曾知道西山的奇怪特別。` }
+        ],
+        2: [
+            { text: `今年九月二十八日，因坐<span class="word" onclick="showNote(16)">法華西亭</span>，望西山，始<span class="word" onclick="showNote(17)">指異之</span>。`, trans: `今年九月二十八日，（我）因為坐在法華寺的西亭，遠望西山，才用手指指着（西山）並認為它奇特。` },
+            { text: `遂命僕人，過湘江，<span class="word" onclick="showNote(18)">緣</span>染溪，<span class="word" onclick="showNote(19)">斫榛莽</span>，焚<span class="word" onclick="showNote(20)">茅茷</span>，<span class="word" onclick="showNote(21)">窮</span>山之高而止。`, trans: `（我）於是命令僕人，渡過湘江，沿着染溪，砍伐叢生的灌木和野草，燒掉茂密的茅草，直到西山的最高峯處才停下。` },
+            { text: `攀援而登，<span class="word" onclick="showNote(22)">箕踞</span>而<span class="word" onclick="showNote(23)">遨</span>，則凡<span class="word" onclick="showNote(24)">數州</span>之<span class="word" onclick="showNote(25)">土壤</span>，皆在<span class="word" onclick="showNote(26)">衽席</span>之下。`, trans: `（我和同伴）攀援爬上（山頂），像簸箕般（張開兩腿）坐下並隨意眺望（四周景色），那麼凡是（附近）幾個州的土地，都在（我的）卧席之下。` },
+            { text: `其<span class="word" onclick="showNote(27)">高下之勢</span>，<span class="word" onclick="showNote(28)">岈然</span><span class="word" onclick="showNote(29)">洼</span>然，若<span class="word" onclick="showNote(30)">垤</span>若<span class="word" onclick="showNote(31)">穴</span>，<span class="word" onclick="showNote(32)">尺寸千里</span>，<span class="word" onclick="showNote(33)">攢蹙累積</span>，<span class="word" onclick="showNote(34)">莫得遯隱</span>。`, trans: `那高低起伏的地勢，是深空和低陷的樣子，（四處羣山）像蟻窩洞口外積起的小土堆，又像蟻蟲的洞穴，（眼前所見只有）尺寸（的土地實際有）千里（那麼遼闊），緊密聚集，層疊堆積，（四周）沒有甚麼（景色）可以隱藏。` },
+            { text: `<span class="word" onclick="showNote(35)">縈青繚白</span>，<span class="word" onclick="showNote(36)">外與天際</span>，<span class="word" onclick="showNote(37)">四望如一</span>。`, trans: `青山白水互相纏繞，外面與天相連。眺望四方，（感覺西山與天空）好像是一樣的。` },
+            { text: `<span class="word" onclick="showNote(38)">然後</span>知是山之特立，不與<span class="word" onclick="showNote(39)">培塿</span>為類。`, trans: `這樣而後（我）才知道這山卓絕獨立，不與（那些）小土丘同為一類。` },
+            { text: `<span class="word" onclick="showNote(40)">悠悠乎與顥氣俱</span>，而莫得其涯；<span class="word" onclick="showNote(41)">洋洋乎與造物者遊</span>，而不知其所窮。`, trans: `（西山的景象）多麼浩渺久遠，（好像）與天地自然在一起，而不知道它的邊際；（西山的景象）多麼廣闊無邊，（好像）與天地（一起）遨遊，而不知道它的盡頭。` },
+            { text: `<span class="word" onclick="showNote(42)">引觴滿酌</span>，<span class="word" onclick="showNote(43)">頹然</span>就醉，不知日之入。`, trans: `（我和同伴）舉起酒杯斟滿了酒，倒下後馬上要醉了，不知道太陽已經下山。` },
+            { text: `<span class="word" onclick="showNote(44)">蒼然</span>暮色，自遠而至，至無所見，而猶不欲歸。`, trans: `深沉的暮色，從遠處而來，直至看不到四周的東西，但是（我）還不想回去。` },
+            { text: `<span class="word" onclick="showNote(45)">心凝形釋</span>，與<span class="word" onclick="showNote(46)">萬化冥合</span>。`, trans: `（我的）心神凝聚，身體得以釋放，而與萬物暗合（為一體）。` },
+            { text: `然後知吾<span class="word" onclick="showNote(47)">嚮</span>之<span class="word" onclick="showNote(48)">未始</span>遊，遊<span class="word" onclick="showNote(49)">於是乎</span>始，故為之文以<span class="word" onclick="showNote(50)">志</span>。是歲元和四年也。`, trans: `這樣而後，才知道我從前算不上真正遊覽過（西山），（真正的）遊歷在這次（宴遊）才開始，所以作這篇文章來記述（這次宴遊經歷）。這一年是元和四年。` }
+        ]
+    };
+
+    // 嚴格依據PPT及PDF設計的詞解題庫（共50題，全數考問詞解）
+    const allQuestions = [
+        { q: "【詞解】「自余為僇人」中的「僇人」意思是甚麼？", options: ["接受刑罰的人，這裏指被貶謫的人", "性格怪異的人", "生活窮困的平民", "隱居深山的人"], ans: 0 },
+        { q: "【詞解】「居是州，恆惴慄」中的「恆」字意思是甚麼？", options: ["經常", "偶爾", "永恆", "突然"], ans: 0 },
+        { q: "【詞解】「恆惴慄」中的「惴慄」意思是甚麼？", options: ["恐懼、顫慄", "憤怒不平", "悲傷落淚", "憂愁苦悶"], ans: 0 },
+        { q: "【詞解】「其隙也」中的「隙」字意思是甚麼？", options: ["空閒時間、閒暇", "牆壁的裂縫", "仇恨、嫌隙", "機會"], ans: 0 },
+        { q: "【詞解】「施施而行，漫漫而遊」中的「施施」意思是甚麼？", options: ["慢慢地步行的樣子", "快速奔跑的樣子", "猶豫不決的樣子", "施捨他人的樣子"], ans: 0 },
+        { q: "【詞解】「漫漫而遊」中的「漫漫」意思是甚麼？", options: ["不經意", "水流廣大的樣子", "時間長久", "道路遙遠"], ans: 0 },
+        { q: "【詞解】「日與其徒上高山」中的「徒」字意思是甚麼？", options: ["同伴、志同道合的人", "徒弟、學生", "步行的路人", "空手的人"], ans: 0 },
+        { q: "【詞解】「窮迴溪」中的「窮」字意思是甚麼？", options: ["窮盡、走到盡頭", "貧窮、缺乏", "尋找、探求", "困窘"], ans: 0 },
+        { q: "【詞解】「無遠不到」中的「無遠」意思是甚麼？", options: ["無論多遠", "沒有遠處", "不要走遠", "遠處沒有東西"], ans: 0 },
+        { q: "【詞解】「披草而坐」中的「披」字意思是甚麼？", options: ["分開、撥開", "披上、穿上", "覆蓋", "斬斷"], ans: 0 },
+        { q: "【詞解】「傾壺而醉」中的「傾壺」引申意思為甚麼？", options: ["倒盡壺中的酒", "把水壺打破", "將水壺傾斜放置", "裝滿一壺水"], ans: 0 },
+        { q: "【詞解】「醉則更相枕以卧」中的「更」字意思是甚麼？", options: ["交替、輪流", "更加、越發", "更改、改變", "半夜（打更）"], ans: 0 },
+        { q: "【詞解】「更相枕以卧」中的「枕」作動詞意思是甚麼？", options: ["把頭放在墊子或其他東西上", "用木頭製作的枕頭", "靠着樹木", "倒下睡覺"], ans: 0 },
+        { q: "【詞解】「意有所極」中的「極」字意思是甚麼？", options: ["到達", "極點、盡頭", "非常、極度", "疲憊"], ans: 0 },
+        { q: "【詞解】「夢亦同趣」中的「趣」字通假與意思為何？", options: ["通「趨」，趨向、前往", "通「促」，急促", "指趣味、興趣", "指滑稽、有趣"], ans: 0 },
+        { q: "【詞解】「覺而起」中的「覺」字意思是甚麼？", options: ["醒來", "感覺、知覺", "發覺、發現", "睡覺"], ans: 0 },
+        { q: "【詞解】「西山之怪特」中的「怪特」意思是甚麼？", options: ["奇怪特別", "妖怪出沒", "怪罪他人", "特別高大"], ans: 0 },
+        { q: "【詞解】「始指異之」中的「異」字在此處的詞性用法是？", options: ["形容詞的意動用法（認為……奇特）", "名詞（奇異的事物）", "動詞（感到驚訝）", "副詞（特別地）"], ans: 0 },
+        { q: "【詞解】「緣染溪」中的「緣」字意思是甚麼？", options: ["沿着", "緣分", "邊緣", "攀爬"], ans: 0 },
+        { q: "【詞解】「斫榛莽」中的「斫」字意思是甚麼？", options: ["砍伐", "燃燒", "穿越", "種植"], ans: 0 },
+        { q: "【詞解】「斫榛莽」中的「莽」字意思是甚麼？", options: ["叢生的荒草", "粗壯的樹木", "莽撞的人", "大蟒蛇"], ans: 0 },
+        { q: "【詞解】「焚茅茷」中的「茷」字是形容甚麼？", options: ["草葉茂盛的樣子", "枯萎乾枯的樣子", "花朵盛開的樣子", "顏色蒼白的樣子"], ans: 0 },
+        { q: "【詞解】「窮山之高而止」中的「窮」字意思是甚麼？", options: ["窮盡，這裏指直到西山的最高峯處", "貧窮，這裏指山勢貧瘠", "尋找，這裏指尋找高山", "困窘，這裏指被困在山上"], ans: 0 },
+        { q: "【詞解】「箕踞而遨」中，「箕踞」是指怎樣的坐姿？", options: ["兩腳向外張開成八字，像簸箕般坐下", "雙膝跪地", "盤腿而坐", "端正地跪坐"], ans: 0 },
+        { q: "【詞解】「箕踞而遨」中的「遨」字引申意思是甚麼？", options: ["隨意眺望四周景色", "傲慢，指態度高傲", "煎熬，指十分痛苦", "嬉遊，這裏指像鳥兒般飛"], ans: 0 },
+        { q: "【詞解】「凡數州之土壤」中的「數州」意思是甚麼？", options: ["虛數，幾個州的意思", "實數，指特定的數個州", "很多州", "沒有州"], ans: 0 },
+        { q: "【詞解】「皆在衽席之下」中的「衽席」是指甚麼？", options: ["卧蓆", "衣服", "座位", "屋簷"], ans: 0 },
+        { q: "【詞解】「岈然洼然」中的「岈然」意思是甚麼？", options: ["深谷大空的樣子", "山峯高聳的樣子", "牙齒外露的樣子", "驚訝讚歎的樣子"], ans: 0 },
+        { q: "【詞解】「岈然洼然」中的「洼」字意思是甚麼？", options: ["低陷", "水漥", "青蛙", "泥濘"], ans: 0 },
+        { q: "【詞解】「若垤若穴」中的「垤」是指甚麼？", options: ["蟻窩洞口外積起的小土堆", "高聳入雲的山峰", "深不見底的洞穴", "平坦寬闊的廣場"], ans: 0 },
+        { q: "【詞解】「尺寸千里」的意思是甚麼？", options: ["由高處往下望，眼前所見只有尺寸的土地，實際有千里那麼遼闊", "量度土地的尺寸，總共有千里之長", "形容土地非常狹小，只有幾尺寸", "形容路途遙遠，有千里之行"], ans: 0 },
+        { q: "【詞解】「攢蹙累積」中的「攢蹙」意思是甚麼？", options: ["緊密聚集", "四處散開", "高低起伏", "連續不斷"], ans: 0 },
+        { q: "【詞解】「莫得遯隱」中的「遯隱」意思是甚麼？", options: ["隱藏", "逃跑、逃走", "隱居山林", "盾牌、防禦"], ans: 0 },
+        { q: "【詞解】「縈青繚白」中，「青」與「白」使用了甚麼修辭？", options: ["借代（借代山與水）", "明喻（像青天白雲）", "擬人（賦予顏色人的動作）", "誇張（形容顏色極深）"], ans: 0 },
+        { q: "【詞解】「外與天際」中的「際」字意思是甚麼？", options: ["相連、匯合", "邊際、盡頭", "交際、交往", "時候、時機"], ans: 0 },
+        { q: "【詞解】「然後知是山之特立」中的「然後」意思是甚麼？", options: ["這樣以後", "然後（與現代漢語相同）", "燃燒之後", "理所當然"], ans: 0 },
+        { q: "【詞解】「不與培塿為類」中的「培塿」是指甚麼？", options: ["小土丘", "高大的樹木", "平庸的人", "低窪的池塘"], ans: 0 },
+        { q: "【詞解】「悠悠乎與顥氣俱」中的「悠悠」字意思是甚麼？", options: ["遼闊無際、久遠", "悠閒自在", "憂愁的樣子", "緩慢的樣子"], ans: 0 },
+        { q: "【詞解】「悠悠乎與顥氣俱」中的「顥氣」是指甚麼？", options: ["天地自然（或天地中的「元氣」）", "白色的雲霧", "寒冷的空氣", "豪邁的氣概"], ans: 0 },
+        { q: "【詞解】「洋洋乎與造物者遊」中的「洋洋」意思是甚麼？", options: ["廣闊無邊的樣子", "得意洋洋的樣子", "海洋的樣子", "外國的風景"], ans: 0 },
+        { q: "【詞解】「洋洋乎與造物者遊」中的「造物者」是指甚麼？", options: ["天地、自然", "創造萬物的神明", "古代的聖人", "工匠"], ans: 0 },
+        { q: "【詞解】「引觴滿酌」中的「引」字意思是甚麼？", options: ["拿起", "吸引", "引導", "退避"], ans: 0 },
+        { q: "【詞解】「引觴滿酌」中的「觴」是指甚麼？", options: ["古代喝酒用的器具", "樂器", "盛水的木桶", "吃飯用的碗"], ans: 0 },
+        { q: "【詞解】「頹然就醉」中的「頹然」是形容甚麼樣子？", options: ["倒下的樣子（這裏形容醉倒）", "傷心失落的樣子", "疲倦乏力的樣子", "衰老憔悴的樣子"], ans: 0 },
+        { q: "【詞解】「蒼然暮色」中的「蒼然」是形容甚麼？", options: ["青黑色，形容傍晚的天色深沉", "蒼白，形容人的臉色", "蒼老，形容年紀大", "蒼翠，形容樹木茂盛"], ans: 0 },
+        { q: "【詞解】「心凝形釋」中的「形釋」意思是甚麼？", options: ["身體得以釋放（不受拘束）", "形體消散", "解釋事物的形態", "忘記自己的外貌"], ans: 0 },
+        { q: "【詞解】「與萬化冥合」中的「冥」字意思是甚麼？", options: ["暗合，即未經商討而意思契合", "冥府，指陰曹地府", "昏暗，指光線不足", "冥想，指閉目深思"], ans: 0 },
+        { q: "【詞解】「然後知吾嚮之未始遊」中的「嚮」字通甚麼字？", options: ["通「向」，從前、過往", "通「響」，聲音", "通「想」，思考", "通「向」，方向"], ans: 0 },
+        { q: "【詞解】「然後知吾嚮之未始遊」中的「未始」引申意思是甚麼？", options: ["本指不曾，這裏引申為算不上", "還沒有開始", "未來的事情", "從一開始"], ans: 0 },
+        { q: "【詞解】「故為之文以志」中的「志」通甚麼字及意思？", options: ["通「誌」，記述", "志向、立志", "雜誌", "心意、心情"], ans: 0 }
+    ];
+
+    let currentQuiz = [];
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content, .tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    function changePara() {
+        const id = document.getElementById('paraSelect').value;
+        const sentences = paragraphs[id] || paragraphs[1];
+        let textHtml = '', transHtml = '';
+        sentences.forEach((s, idx) => {
+            textHtml += `<span class="sent-block" id="orig-${idx}" onmouseover="highlightSent(${idx})" onmouseout="unhighlightSent(${idx})" onclick="toggleLock(${idx})">${s.text}</span> `;
+            transHtml += `<span class="sent-block" id="trans-${idx}" onmouseover="highlightSent(${idx})" onmouseout="unhighlightSent(${idx})" onclick="toggleLock(${idx})">${s.trans}</span> `;
+        });
+        document.getElementById('text-container').innerHTML = textHtml;
+        document.getElementById('trans-container').innerHTML = transHtml;
+        document.getElementById('noteContent').innerHTML = '請點擊上方課文中的<span class="word">紫底框字詞</span>查看注釋！';
+    }
+
+    function highlightSent(idx) {
+        document.getElementById(`orig-${idx}`).classList.add('highlight');
+        document.getElementById(`trans-${idx}`).classList.add('highlight');
+    }
+
+    function unhighlightSent(idx) {
+        document.getElementById(`orig-${idx}`).classList.remove('highlight');
+        document.getElementById(`trans-${idx}`).classList.remove('highlight');
+    }
+
+    function toggleLock(idx) {
+        const origEl = document.getElementById(`orig-${idx}`);
+        const isLocked = origEl.classList.contains('locked-highlight');
+        document.querySelectorAll('.locked-highlight').forEach(el => el.classList.remove('locked-highlight'));
+        if (!isLocked) {
+            origEl.classList.add('locked-highlight');
+            document.getElementById(`trans-${idx}`).classList.add('locked-highlight');
+        }
+    }
+
+    function showNote(id) {
+        event.stopPropagation();
+        document.getElementById('noteContent').innerHTML = `<strong style="color:var(--primary-color); font-size:20px;">【${dict[id].word}】</strong><br><span style="margin-top:4px; display:inline-block;">${dict[id].note}</span>`;
+    }
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function generateQuiz() {
+        // 從題庫中隨機抽出10題 (專注詞解)
+        let shuffledList = shuffleArray([...allQuestions]);
+        currentQuiz = shuffledList.slice(0, 10).map(q => {
+            // 打亂每題選項
+            let optionsWithIndex = q.options.map((opt, idx) => ({ opt, isCorrect: idx === q.ans }));
+            optionsWithIndex = shuffleArray(optionsWithIndex);
+            return {
+                q: q.q,
+                options: optionsWithIndex.map(o => o.opt),
+                ans: optionsWithIndex.findIndex(o => o.isCorrect)
+            };
+        });
+
+        let html = '';
+        currentQuiz.forEach((q, index) => {
+            html += `<div class="quiz-question"><div class="quiz-title">第 ${index + 1} 題：${q.q}</div>`;
+            q.options.forEach((opt, optIndex) => {
+                html += `<label class="quiz-option" id="lbl-q${index}-o${optIndex}">
+                    <input type="radio" name="q${index}" value="${optIndex}"> ${opt}</label>`;
+            });
+            html += `<div class="quiz-feedback" id="feedback-${index}"></div></div>`;
+        });
+        
+        document.getElementById('quiz-form').innerHTML = html;
+        document.getElementById('quiz-result-banner').style.display = 'none';
+        document.getElementById('btn-submit-quiz').style.display = 'block';
+        document.getElementById('btn-retry-quiz').style.display = 'none';
+    }
+
+    function gradeQuiz() {
+        const name = document.getElementById('stu-name').value.trim();
+        const cls = document.getElementById('stu-class').value.trim();
+        const num = document.getElementById('stu-num').value.trim();
+
+        if (!name || !cls || !num) {
+            const banner = document.getElementById('quiz-result-banner');
+            banner.style.display = 'block';
+            banner.className = 'result-fail';
+            banner.innerHTML = `⚠️ 老師提提你：請先填寫上方姓名、班別及學號！`;
+            return;
+        }
+
+        let score = 0;
+        let allAnswered = true;
+        for (let i = 0; i < currentQuiz.length; i++) {
+            if (!document.querySelector(`input[name="q${i}"]:checked`)) allAnswered = false;
+        }
+        
+        if (!allAnswered) {
+            const banner = document.getElementById('quiz-result-banner');
+            banner.style.display = 'block';
+            banner.className = 'result-fail';
+            banner.innerHTML = `⚠️ 請完成所有問題才提交答案！`;
+            return;
+        }
+
+        for (let i = 0; i < currentQuiz.length; i++) {
+            const selectedVal = parseInt(document.querySelector(`input[name="q${i}"]:checked`).value);
+            const correctAns = currentQuiz[i].ans;
+            document.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.disabled = true);
+            
+            if (selectedVal === correctAns) {
+                score += 10;
+                document.getElementById(`lbl-q${i}-o${selectedVal}`).classList.add('correct');
+            } else {
+                document.getElementById(`lbl-q${i}-o${selectedVal}`).classList.add('wrong');
+                document.getElementById(`lbl-q${i}-o${correctAns}`).classList.add('correct');
+            }
+        }
+
+        const banner = document.getElementById('quiz-result-banner');
+        banner.style.display = 'block';
+        banner.className = score >= 50 ? 'result-pass' : 'result-fail';
+        banner.innerHTML = `🎓 提交成功！${name} 同學，你的得分是：${score} / ${currentQuiz.length * 10} 分`;
+
+        document.getElementById('btn-submit-quiz').style.display = 'none';
+        document.getElementById('btn-retry-quiz').style.display = 'block';
+
+        // 👈 請在記事本中開啟此檔案，將引號內的網址換成你個人 Google Sheet Apps Script 部署後的 Web App URL
+        const scriptURL = 'https://script.google.com/macros/s/你的網頁應用程式ID/exec'; 
+        
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('cls', cls);
+        formData.append('num', num);
+        formData.append('score', score);
+
+        fetch(scriptURL, { method: 'POST', body: formData })
+            .then(response => console.log('成績已成功記錄'))
+            .catch(error => console.error('記錄失敗!', error.message));
+    }
+
+    window.onload = function() {
+        changePara();
+        generateQuiz();
+    };
+</script>
+</body>
+</html>
